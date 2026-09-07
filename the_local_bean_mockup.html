@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Local Bean at Knightsbridge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+        
+        :root {
+            --brand-teal: #0f766e; /* tailwind teal-700 */
+            --brand-teal-dark: #115e59; /* tailwind teal-800 */
+            --brand-gold: #d97706; /* tailwind amber-600 */
+            --brand-gold-light: #f59e0b; /* tailwind amber-500 */
+            --brand-bg: #fafaf9; /* tailwind stone-50 */
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--brand-bg);
+            color: #292524;
+        }
+        
+        h1, h2, h3, .serif-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Hero Background with botanical/coffee vibe */
+        .hero-bg {
+            background-image: linear-gradient(to right, rgba(15, 118, 110, 0.9), rgba(15, 118, 110, 0.6)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f5f5f4; }
+        ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-teal); }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .slide-up { animation: slideUp 0.5s ease-out forwards; }
+        
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .cart-pop { animation: pulse-soft 0.3s ease-out; }
+
+        .modal-overlay { backdrop-filter: blur(5px); }
+    </style>
+</head>
+<body class="antialiased relative selection:bg-teal-700 selection:text-white">
+
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm fixed w-full z-40 top-0 border-b border-stone-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo -->
+                <div class="flex items-center flex-shrink-0 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="flex flex-col">
+                        <span class="font-bold text-3xl tracking-tighter text-stone-900 leading-none">
+                            the local <span class="text-teal-700 font-black">bean</span>
+                        </span>
+                        <span class="text-[10px] tracking-[0.2em] text-stone-500 uppercase mt-1">at Knightsbridge</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about" class="text-stone-600 hover:text-teal-700 transition font-medium text-sm uppercase tracking-wider">Our Story</a>
+                    <a href="#menu" class="text-stone-600 hover:text-teal-700 transition font-medium text-sm uppercase tracking-wider">Menu</a>
+                    <a href="#location" class="text-stone-600 hover:text-teal-700 transition font-medium text-sm uppercase tracking-wider">Location</a>
+                    <a href="#menu" class="bg-teal-700 text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-teal-800 transition shadow-lg shadow-teal-700/20">
+                        Order Pickup
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-stone-600 hover:text-teal-700">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-bg h-[80vh] flex items-center justify-center mt-20 relative">
+        <div class="absolute inset-0 bg-stone-900/20"></div> <!-- Extra darkening for text legibility -->
+        <div class="text-center text-white px-4 z-10 w-full max-w-4xl slide-up">
+            <div class="inline-flex items-center justify-center space-x-2 mb-6">
+                <span class="h-[1px] w-8 bg-amber-500"></span>
+                <span class="uppercase tracking-[0.3em] text-xs font-bold text-amber-500">Castle Hill, NSW</span>
+                <span class="h-[1px] w-8 bg-amber-500"></span>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight serif-font">
+                Your local hub for <br><span class="text-amber-500 italic">exceptional</span> coffee.
+            </h1>
+            
+            <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light text-stone-100 leading-relaxed">
+                Serving premium Paradox coffee, fresh cold-pressed juices, and a delicious all-day menu tailored to the Knightsbridge community.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#menu" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-10 rounded-full transition transform hover:-translate-y-1 shadow-xl text-sm uppercase tracking-wider">
+                    Order Ahead Online
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="about" class="py-24 bg-stone-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4 text-stone-900 serif-font">Crafted with Passion</h2>
+                <div class="w-16 h-1 bg-teal-700 mx-auto"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div class="text-center p-8 bg-white rounded-2xl shadow-sm border border-stone-100 hover:-translate-y-2 transition duration-300">
+                    <div class="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-6 text-teal-700 text-2xl">
+                        <i class="fas fa-mug-hot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-stone-900">Coffee by Paradox</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">Expertly roasted beans delivering a rich, smooth flavor profile. From perfectly textured flat whites to refreshing iced lattes.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="text-center p-8 bg-white rounded-2xl shadow-sm border border-stone-100 hover:-translate-y-2 transition duration-300">
+                    <div class="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-6 text-teal-700 text-2xl">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-stone-900">Fresh & Inclusive</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">An extensive all-day menu with abundant vegetarian (v), gluten-free (gf), and dairy-free (df) options so everyone can enjoy.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="text-center p-8 bg-white rounded-2xl shadow-sm border border-stone-100 hover:-translate-y-2 transition duration-300">
+                    <div class="w-16 h-16 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-6 text-teal-700 text-2xl">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-stone-900">All-Day Menu</h3>
+                    <p class="text-stone-500 text-sm leading-relaxed">Whether you crave Smashed Avo at 7 AM or a gourmet Steak Sandwich at 2 PM, our kitchen serves your favorites all day long.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menu" class="py-20 bg-white border-t border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 pb-6 border-b border-stone-100">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2 text-stone-900 serif-font">Our Menu</h2>
+                    <p class="text-stone-500 text-sm">Order online to skip the queue at Knightsbridge.</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex flex-col items-end">
+                    <span id="kitchenStatus" class="inline-flex items-center px-4 py-2 rounded-full bg-green-50 text-green-700 text-xs font-bold tracking-widest uppercase border border-green-200 shadow-sm transition-all duration-300">
+                        <i class="fas fa-circle text-[8px] mr-2 animate-pulse"></i> Accepting Orders
+                    </span>
+                    <p id="timeMessage" class="text-xs text-stone-400 mt-2 font-medium"></p>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-10 relative">
+                
+                <!-- Left Column: Menu Items -->
+                <div class="lg:w-2/3">
+                    
+                    <!-- Category: All Day Brekkie -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-sun text-amber-500 mr-3 text-lg"></i> All Day Brekkie
+                        </h3>
+                        <div id="grid-brekkie" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Eggs Your Way</h4><span class="font-bold text-teal-700">$11.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Two free range eggs (fried, poached or scrambled) on sourdough.</p></div>
+                                <button onclick="addToCart('Eggs Your Way', 11.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Bacon and Eggs</h4><span class="font-bold text-teal-700">$15.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Two rashers bacon with eggs your way on sourdough.</p></div>
+                                <button onclick="addToCart('Bacon and Eggs', 15.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Chilli Scramble & Chorizo</h4><span class="font-bold text-teal-700">$15.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Spiced chorizo, chilli cream, coriander on sourdough.</p></div>
+                                <button onclick="addToCart('Chilli Scramble', 15.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Kale and Mushroom</h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Poached eggs, sautéed kale, mushroom, red capsicum.</p></div>
+                                <button onclick="addToCart('Kale & Mushroom', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Smashed Avo <span class="text-xs text-stone-400 font-normal">(v)(gfo)</span></h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Sautéed cherry tomato with basil, persian fetta, beetroot hummus, baby rocket on sourdough.</p></div>
+                                <button onclick="addToCart('Smashed Avo', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Eggs Benedict <span class="text-xs text-stone-400 font-normal">(vo)</span></h4><span class="font-bold text-teal-700">$17.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Poached eggs, hollandaise, spinach on sourdough. Choice of Mushroom or Bacon/Ham.</p></div>
+                                <button onclick="addToCart('Eggs Benedict', 17.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Smoked Salmon Stack <span class="text-xs text-stone-400 font-normal">(gfo)</span></h4><span class="font-bold text-teal-700">$17.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Cream cheese, spinach, smashed avocado and a poached egg on toasted sourdough.</p></div>
+                                <button onclick="addToCart('Salmon Stack', 17.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">The Local Big Breakfast <span class="text-xs text-stone-400 font-normal">(gfo)</span></h4><span class="font-bold text-teal-700">$20.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Two eggs your way, double bacon, chorizo, sautéed mushroom, wilted spinach, hash brown with sourdough.</p></div>
+                                <button onclick="addToCart('Big Breakfast', 20.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Spanish Eggs</h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">2 eggs (fried or poached), chorizo, persian fetta in spiced tomato-based sauce, turkish bread.</p></div>
+                                <button onclick="addToCart('Spanish Eggs', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Veggie Breakfast <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$19.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">2 poached eggs, sautéed mushroom, wilted spinach, roasted tomato, avocado, halloumi with sourdough.</p></div>
+                                <button onclick="addToCart('Veggie Breakfast', 19.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">4 Filling Omelette <span class="text-xs text-stone-400 font-normal">(v)(gfo)</span></h4><span class="font-bold text-teal-700">$18.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Served with sourdough. Choose fillings: ham, cheese, mushroom, tomato, spinach, onion.</p></div>
+                                <button onclick="addToCart('Omelette', 18.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Corn & Zucchini Fritters <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$18.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Baby rocket, smashed avocado, cherry tomato, poached egg with balsamic glaze.</p></div>
+                                <button onclick="addToCart('Corn Fritters', 18.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Halloumi Stack <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Grilled zucchini, eggplant, red capsicum, halloumi, rocket and pesto on sourdough.</p></div>
+                                <button onclick="addToCart('Halloumi Stack', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Mushroom Risotto <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Baby spinach, fresh cream, garlic, mushroom, parmesan cheese.</p></div>
+                                <button onclick="addToCart('Mushroom Risotto', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Light Bites & Bowls -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-bread-slice text-amber-500 mr-3 text-lg"></i> Light Bites & Bowls
+                        </h3>
+                        <div id="grid-light" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Acai Bowl <span class="text-xs text-stone-400 font-normal">(gf)(vg)</span></h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Acai, banana, mixed berries, gluten free granola, chia seeds.</p></div>
+                                <button onclick="addToCart('Acai Bowl', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Granola Bowl <span class="text-xs text-stone-400 font-normal">(gf)(v)</span></h4><span class="font-bold text-teal-700">$14.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Gluten free granola, vanilla yoghurt, honey, strawberry, banana, chia seed, toasted coconut chips.</p></div>
+                                <button onclick="addToCart('Granola Bowl', 14.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Buttermilk Pancake Stack <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$15.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Strawberry, banana, maple syrup, ice cream.</p></div>
+                                <button onclick="addToCart('Pancakes', 15.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Tuscan Toast <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$13.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Ricotta cheese, banana, honey, cinnamon, fig and raisin sourdough.</p></div>
+                                <button onclick="addToCart('Tuscan Toast', 13.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Bruschetta <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$14.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Marinated cherry tomato, red onion, olive oil, persian fetta, balsamic glaze on sourdough.</p></div>
+                                <button onclick="addToCart('Bruschetta', 14.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Croissant</h4><span class="font-bold text-teal-700">$5.50</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Toasted with jam, or almond nutella. Add ham & cheese (+$3.50).</p></div>
+                                <button onclick="addToCart('Croissant', 5.50)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Sourdough Toast</h4><span class="font-bold text-teal-700">$5.50</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">White, quinoa & soy, or raisin. Served with condiments.</p></div>
+                                <button onclick="addToCart('Sourdough Toast', 5.50)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Banana Bread <span class="text-xs text-stone-400 font-normal">(v)</span></h4><span class="font-bold text-teal-700">$5.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Or Pear & Raspberry Bread.</p></div>
+                                <button onclick="addToCart('Banana Bread', 5.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Burgers, Wraps & Sandwiches -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-hamburger text-amber-500 mr-3 text-lg"></i> Burgers, Wraps & Sandwiches
+                        </h3>
+                        <div id="grid-burgers" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Bacon and Egg Roll <span class="text-xs text-stone-400 font-normal">(gfo)</span></h4><span class="font-bold text-teal-700">$10.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Fried egg, smoky bacon, bbq or tomato sauce.</p></div>
+                                <button onclick="addToCart('Bacon & Egg Roll', 10.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">New Brekkie Burger</h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Smoky bacon, fried egg, avocado spread, melted cheese, hash brown, aioli on brioche bun.</p></div>
+                                <button onclick="addToCart('Brekkie Burger', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">The Local Beef Burger</h4><span class="font-bold text-teal-700">$18.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">House made beef patty, caramelised onion, tomato, mix leaves, american cheese, house sauce with chips.</p></div>
+                                <button onclick="addToCart('Beef Burger', 18.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Peri Peri Chicken Burger</h4><span class="font-bold text-teal-700">$17.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Grilled chicken breast fillet, mix leaves, peri peri sauce, melted cheese on brioche bun with chips.</p></div>
+                                <button onclick="addToCart('Peri Chicken Burger', 17.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Chicken & Halloumi Burger</h4><span class="font-bold text-teal-700">$18.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Grilled chicken breast, halloumi, baby spinach, aioli on brioche bun with chips.</p></div>
+                                <button onclick="addToCart('Chicken Halloumi Burger', 18.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Steak Sandwich <span class="text-xs text-stone-400 font-normal">(gfo)</span></h4><span class="font-bold text-teal-700">$17.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Scotch fillet, caramelised onion, fresh tomato, spinach, bbq sauce on sourdough.</p></div>
+                                <button onclick="addToCart('Steak Sandwich', 17.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Chicken Wraps</h4><span class="font-bold text-teal-700">$14.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Toasted tortilla with tasty cheese, mix leaves. Choice of Peri Peri, Schnitzel, or Grilled Chicken.</p></div>
+                                <button onclick="addToCart('Chicken Wrap', 14.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Chicken Panini <span class="text-xs text-stone-400 font-normal">(gfo)</span></h4><span class="font-bold text-teal-700">$14.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Grilled chicken breast, tasty cheese, avocado spread, baby rocket, pesto mayo.</p></div>
+                                <button onclick="addToCart('Chicken Panini', 14.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Salads, Sides & Kids -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-leaf text-amber-500 mr-3 text-lg"></i> Salads, Sides & Kids
+                        </h3>
+                        <div id="grid-salads" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Quinoa Salad <span class="text-xs text-stone-400 font-normal">(vg)</span></h4><span class="font-bold text-teal-700">$15.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Quinoa, chickpea, rocket, cucumber, cherry tomato, avocado, lemon vinaigrette.</p></div>
+                                <button onclick="addToCart('Quinoa Salad', 15.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Grilled Chicken Salad</h4><span class="font-bold text-teal-700">$16.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Grilled chicken, chorizo, mixed leaves, avocado, cherry tomatoes with balsamic dressing.</p></div>
+                                <button onclick="addToCart('Chicken Salad', 16.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Chips or Wedges</h4><span class="font-bold text-teal-700">$5.00</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Hot Chips (S $5 / L $9) or Sweet Potato Wedges (S $6 / L $11).</p></div>
+                                <button onclick="addToCart('Bowl of Chips', 5.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl border border-stone-200 hover:border-teal-500 transition group flex flex-col justify-between h-full shadow-sm">
+                                <div><div class="flex justify-between items-start mb-2"><h4 class="font-bold text-stone-900">Kids Meals (12 & Under)</h4><span class="font-bold text-teal-700">$8.00+</span></div><p class="text-xs text-stone-500 mb-4 leading-relaxed">Muffin ($8), Nuggets & Chips ($8), Schnitzel & Chips ($10), Pancakes ($11), Cheeseburger ($12).</p></div>
+                                <button onclick="addToCart('Kids Meal', 8.00)" class="w-full bg-stone-100 text-stone-800 group-hover:bg-teal-700 group-hover:text-white font-semibold py-2 rounded-lg transition duration-200 text-sm">Add to Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Hot Drinks -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-coffee text-amber-500 mr-3 text-lg"></i> Coffee by Paradox & Tea
+                        </h3>
+                        <div id="grid-hot-drinks" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Espresso / Piccolo</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$3.50</span>
+                                <button onclick="addToCart('Espresso', 3.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Latte / Flat White / Cap</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$4.00</span>
+                                <button onclick="addToCart('Regular Coffee', 4.00)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Mocha / Hot Choc</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$4.50</span>
+                                <button onclick="addToCart('Mocha/Hot Choc', 4.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Specialty Latte</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$4.50</span>
+                                <button onclick="addToCart('Specialty Latte', 4.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Prana Sticky Chai</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$5.50</span>
+                                <button onclick="addToCart('Sticky Chai', 5.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Organic Tea Tonic</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$4.50</span>
+                                <button onclick="addToCart('Organic Tea', 4.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category: Cold Drinks -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold mb-6 text-teal-800 flex items-center">
+                            <i class="fas fa-glass-whiskey text-amber-500 mr-3 text-lg"></i> Cold Drinks, Juices & Smoothies
+                        </h3>
+                        <div id="grid-cold-drinks" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Over Ice Drink</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$5.50</span>
+                                <button onclick="addToCart('Iced Drink', 5.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Coffee Frappe</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$6.50</span>
+                                <button onclick="addToCart('Frappe', 6.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Fresh Squeezed Juice</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$7.50</span>
+                                <button onclick="addToCart('Fresh Juice', 7.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Green Goodness Juice</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$8.00</span>
+                                <button onclick="addToCart('Green Juice', 8.00)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Signature Smoothie</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$9.00</span>
+                                <button onclick="addToCart('Smoothie', 9.00)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 text-center flex flex-col justify-between hover:shadow-md transition">
+                                <h4 class="font-bold text-stone-900 text-sm mb-1">Regular Milkshake</h4>
+                                <span class="font-bold text-teal-700 text-sm mb-3">$6.50</span>
+                                <button onclick="addToCart('Milkshake', 6.50)" class="w-full bg-white border border-stone-200 text-stone-700 hover:bg-teal-700 hover:text-white font-semibold py-1.5 rounded-md transition text-xs">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 bg-stone-200 min-h-[350px] relative h-full">
+                    <iframe 
+                        src="https://maps.google.com/maps?q=1/159%20Ridgecrop%20Dr,%20Castle%20Hill%20NSW%202154&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                        class="absolute inset-0 w-full h-full" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-stone-200 py-10 text-center relative">
+        <div class="mb-4 flex flex-col items-center">
+            <span class="font-bold text-2xl tracking-tighter text-stone-900 leading-none">
+                the local <span class="text-teal-700 font-black">bean</span>
+            </span>
+        </div>
+        <p class="text-stone-400 text-xs uppercase tracking-widest">&copy; 2026 The Local Bean. All Rights Reserved.</p>
+        
+        <!-- Hidden button for dev pitch mode -->
+        <button onclick="togglePitchMode()" class="absolute bottom-2 right-2 w-4 h-4 bg-transparent focus:outline-none"></button>
+    </footer>
+
+    <div id="checkoutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center px-4">
+        <div class="absolute inset-0 bg-stone-900/60 modal-overlay" onclick="closeModal()"></div>
+        
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md z-10 overflow-hidden transform scale-95 transition-transform duration-300" id="modalContent">
+            
+            <div class="bg-stone-50 px-6 py-4 border-b border-stone-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-stone-900 uppercase tracking-wider text-sm">Complete Order</h3>
+                <button onclick="closeModal()" class="text-stone-400 hover:text-stone-600 transition"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div class="p-6" id="modalBody">
+                <div class="flex justify-between text-lg mb-6 pb-4 border-b border-stone-100">
+                    <span class="text-stone-600 font-medium">Total:</span>
+                    <span class="font-bold text-teal-700">$<span id="modalTotal">0.00</span></span>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Name</label>
+                        <input type="text" placeholder="John Doe" class="w-full border border-stone-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-teal-700 outline-none transition text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Phone Number (SMS Alert)</label>
+                        <input type="tel" placeholder="0400 000 000" class="w-full border border-stone-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-teal-700 outline-none transition text-sm">
+                    </div>
+                </div>
+
+                <button onclick="processOrder()" class="w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-3.5 px-4 rounded-xl mt-8 transition shadow-lg shadow-teal-700/20 uppercase tracking-widest text-sm">
+                    Pay at Cafe (Pickup)
+                </button>
+            </div>
+            
+            <div class="p-10 text-center hidden flex-col items-center" id="modalSuccess">
+                <div class="w-16 h-16 bg-green-50 border-2 border-green-200 rounded-full flex items-center justify-center mb-6 text-green-500 text-3xl">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-stone-900 mb-2">Order Received!</h3>
+                <p class="text-stone-500 text-sm mb-8">We are preparing your order. See you soon!</p>
+                <button onclick="resetAndClose()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold py-3 px-4 rounded-xl transition text-sm uppercase tracking-wider">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="chatbot-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+        
+        <div id="chat-window" class="bg-white w-[340px] sm:w-[380px] rounded-2xl shadow-2xl border border-stone-200 overflow-hidden mb-4 hidden transform transition-all origin-bottom-right scale-95 opacity-0 duration-300 flex-col">
+            
+            <!-- Header -->
+            <div class="bg-teal-700 px-5 py-4 flex justify-between items-center text-white">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white text-lg">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-sm tracking-wide">Local Bean Concierge</h4>
+                        <p class="text-[10px] text-teal-100 uppercase tracking-widest flex items-center mt-0.5"><span class="w-1.5 h-1.5 rounded-full bg-green-400 mr-1.5 animate-pulse"></span> Online</p>
+                    </div>
+                </div>
+                <button onclick="toggleChat()" class="text-teal-200 hover:text-white transition"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <!-- Messages Area -->
+            <div id="chat-messages" class="h-80 p-4 overflow-y-auto bg-stone-50 space-y-4 text-sm flex flex-col font-medium">
+                <div class="flex items-start max-w-[90%]">
+                    <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 mr-2 flex-shrink-0">
+                        <i class="fas fa-robot text-xs"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-stone-200 shadow-sm text-stone-700 leading-relaxed text-xs">
+                        Hi! I'm the digital assistant for The Local Bean. How can I help you today?
+                    </div>
+                </div>
+                
+                <!-- NEW: Quick Action Chips -->
+                <div class="flex flex-wrap gap-2 mt-2" id="quick-chips">
+                    <button onclick="triggerQuickReply('What are your hours?')" class="bg-white border border-teal-200 text-teal-700 px-3 py-1.5 rounded-full text-[11px] hover:bg-teal-50 transition shadow-sm">⏰ Hours</button>
+                    <button onclick="triggerQuickReply('Where are you located?')" class="bg-white border border-teal-200 text-teal-700 px-3 py-1.5 rounded-full text-[11px] hover:bg-teal-50 transition shadow-sm">📍 Location</button>
+                    <button onclick="triggerQuickReply('Do you have vegan options?')" class="bg-white border border-teal-200 text-teal-700 px-3 py-1.5 rounded-full text-[11px] hover:bg-teal-50 transition shadow-sm">🥗 Vegan (vg)</button>
+                    <button onclick="triggerQuickReply('What gluten free food do you have?')" class="bg-white border border-teal-200 text-teal-700 px-3 py-1.5 rounded-full text-[11px] hover:bg-teal-50 transition shadow-sm">🍞 Gluten Free (gf)</button>
+                </div>
+            </div>
+
+            <div id="chat-typing" class="px-4 py-2 bg-stone-50 hidden">
+                <div class="flex items-center space-x-1 text-stone-400">
+                    <div class="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce"></div>
+                    <div class="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    <div class="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                </div>
+            </div>
+
+            <!-- Input Box -->
+            <div class="p-3 bg-white border-t border-stone-200 flex items-center space-x-2">
+                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-grow border border-stone-200 bg-stone-50 rounded-full px-4 py-2 focus:outline-none focus:border-teal-500 text-xs font-medium" onkeypress="handleChatEnter(event)">
+                <button onclick="sendMessage()" class="w-8 h-8 bg-teal-700 rounded-full text-white flex items-center justify-center hover:bg-teal-800 transition shadow-md flex-shrink-0">
+                    <i class="fas fa-paper-plane text-xs -ml-0.5"></i>
+                </button>
+            </div>
+        </div>
+
+        <button id="chat-toggle-btn" onclick="toggleChat()" class="w-14 h-14 bg-teal-700 rounded-full shadow-2xl flex items-center justify-center text-white text-2xl hover:bg-teal-800 hover:scale-105 transition duration-300 relative border-2 border-white">
+            <i class="fas fa-comment-dots"></i>
+            <span class="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 border-2 border-white rounded-full animate-pulse"></span>
+        </button>
+    </div>
+
+    <script>
+        // --- CART LOGIC ---
+        let cart = [];
+        let total = 0;
+        const formatMoney = (amount) => amount.toFixed(2);
+
+        function addToCart(itemName, price) {
+            cart.push({ name: itemName, price: price });
+            total += price;
+            
+            const cartCountEl = document.getElementById('cartCount');
+            cartCountEl.classList.remove('cart-pop');
+            void cartCountEl.offsetWidth; // trigger reflow
+            cartCountEl.classList.add('cart-pop');
+            
+            renderCart();
+        }
+
+        function removeFromCart(index) {
+            total -= cart[index].price;
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function renderCart() {
+            const listEl = document.getElementById('cartItems');
+            const emptyEl = document.getElementById('emptyCart');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            document.getElementById('cartCount').innerText = cart.length;
+            document.getElementById('cartTotal').innerText = formatMoney(total);
+            document.getElementById('modalTotal').innerText = formatMoney(total);
+
+            if (cart.length === 0) {
+                listEl.innerHTML = '';
+                listEl.appendChild(emptyEl);
+                emptyEl.style.display = 'flex';
+                
+                checkoutBtn.disabled = true;
+                checkoutBtn.className = "w-full bg-stone-200 text-stone-400 font-bold py-4 px-4 rounded-xl transition duration-200 flex items-center justify-center cursor-not-allowed uppercase tracking-wider text-sm";
+                return;
+            }
+
+            emptyEl.style.display = 'none';
+            listEl.innerHTML = '';
+
+            cart.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'flex justify-between items-center bg-stone-50 p-3 rounded-lg border border-stone-100 slide-up'; 
+                itemDiv.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-bold text-xs text-stone-900">${item.name}</span>
+                        <span class="text-[11px] text-teal-700 font-bold">$${formatMoney(item.price)}</span>
+                    </div>
+                    <button onclick="removeFromCart(${index})" class="text-stone-300 hover:text-red-500 transition p-1">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                `;
+                listEl.appendChild(itemDiv);
+            });
+
+            checkoutBtn.disabled = false;
+            checkoutBtn.className = "w-full bg-teal-700 hover:bg-teal-800 text-white font-bold py-4 px-4 rounded-xl transition shadow-lg shadow-teal-700/30 flex items-center justify-center transform hover:-translate-y-1 uppercase tracking-wider text-sm";
+        }
+
+        /* --- MODAL LOGIC --- */
+        function openCheckoutModal() {
+            if(cart.length === 0) return;
+            const modal = document.getElementById('checkoutModal');
+            const content = document.getElementById('modalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('checkoutModal');
+            const content = document.getElementById('modalContent');
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+
+        function processOrder() {
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processing...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('modalBody').classList.add('hidden');
+                document.getElementById('modalSuccess').classList.remove('hidden');
+            }, 1500);
+        }
+
+        function resetAndClose() {
+            closeModal();
+            setTimeout(() => {
+                cart = [];
+                total = 0;
+                renderCart();
+                document.getElementById('modalBody').classList.remove('hidden');
+                document.getElementById('modalSuccess').classList.add('hidden');
+                const processBtn = document.querySelector('#modalBody button');
+                processBtn.innerHTML = 'Pay at Cafe (Pickup)';
+                processBtn.disabled = false;
+            }, 500);
+        }
+
+        let forcePitchMode = false; // Dev tool to force menu open during late-night pitches
+
+        function togglePitchMode() {
+            forcePitchMode = !forcePitchMode;
+            updateMenuAvailability();
+            console.log("Pitch mode active:", forcePitchMode);
+        }
+
+        function updateMenuAvailability() {
+            const now = new Date();
+            const day = now.getDay(); // 0 = Sun, 1 = Mon...
+            const hour = now.getHours();
+            const min = now.getMinutes();
+            const currentTime = hour + (min / 60);
+
+            // Local Bean Hours: Mon-Fri 6am-3pm, Sat-Sun 7am-2pm
+            let isOpen = false;
+            let closingSoon = false;
+            let timeMsg = "";
+
+            if (day >= 1 && day <= 5) { // Weekday
+                if (currentTime >= 6 && currentTime < 15) isOpen = true;
+                if (currentTime >= 14 && currentTime < 15) closingSoon = true;
+                timeMsg = isOpen ? "Closes at 3:00 PM today." : "Opens at 6:00 AM tomorrow.";
+            } else { // Weekend
+                if (currentTime >= 7 && currentTime < 14) isOpen = true;
+                if (currentTime >= 13 && currentTime < 14) closingSoon = true;
+                timeMsg = isOpen ? "Closes at 2:00 PM today." : (day === 0 ? "Opens at 6:00 AM tomorrow." : "Opens at 7:00 AM tomorrow.");
+            }
+
+            if (forcePitchMode) {
+                isOpen = true;
+                closingSoon = false;
+                timeMsg = "[Demo/Pitch Mode Active]";
+            }
+
+            const statusBadge = document.getElementById('kitchenStatus');
+            const msgEl = document.getElementById('timeMessage');
+            
+            msgEl.innerText = timeMsg;
+
+            if (isOpen && closingSoon) {
+                statusBadge.innerHTML = '<i class="fas fa-clock text-[8px] mr-2"></i> Closing Soon';
+                statusBadge.className = "inline-flex items-center px-4 py-2 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold tracking-widest uppercase transition-all duration-300";
+            } else if (isOpen) {
+                statusBadge.innerHTML = '<i class="fas fa-circle text-[8px] mr-2 animate-pulse text-green-500"></i> Accepting Orders';
+                statusBadge.className = "inline-flex items-center px-4 py-2 rounded-full bg-green-50 text-green-700 border border-green-200 text-[10px] font-bold tracking-widest uppercase transition-all duration-300";
+            } else {
+                statusBadge.innerHTML = '<i class="fas fa-moon text-[8px] mr-2"></i> Kitchen Closed';
+                statusBadge.className = "inline-flex items-center px-4 py-2 rounded-full bg-stone-100 text-stone-500 border border-stone-200 text-[10px] font-bold tracking-widest uppercase transition-all duration-300";
+            }
+
+            function toggleCategory(gridId, isAvailable) {
+                const grid = document.getElementById(gridId);
+                if (!grid) return;
+                
+                const buttons = grid.querySelectorAll('button');
+                buttons.forEach(btn => {
+                    if (!isAvailable) {
+                        btn.disabled = true;
+                        btn.classList.replace('bg-stone-100', 'bg-stone-50');
+                        btn.classList.replace('text-stone-800', 'text-stone-300');
+                        btn.classList.replace('group-hover:bg-teal-700', 'hover:bg-stone-50');
+                        btn.innerHTML = `<i class="fas fa-lock mr-1"></i> Closed`;
+                        btn.classList.add('cursor-not-allowed');
+                    } else {
+                        btn.disabled = false;
+                        btn.classList.replace('bg-stone-50', 'bg-stone-100');
+                        btn.classList.replace('text-stone-300', 'text-stone-800');
+                        btn.classList.replace('hover:bg-stone-50', 'group-hover:bg-teal-700');
+                        btn.innerHTML = 'Add to Order';
+                        btn.classList.remove('cursor-not-allowed');
+                    }
+                });
+            }
+
+            toggleCategory('grid-brekkie', isOpen);
+            toggleCategory('grid-light', isOpen);
+            toggleCategory('grid-burgers', isOpen);
+            toggleCategory('grid-salads', isOpen);
+            toggleCategory('grid-hot-drinks', isOpen);
+            toggleCategory('grid-cold-drinks', isOpen);
+        }
+
+        updateMenuAvailability();
+        setInterval(updateMenuAvailability, 60000);
+
+        const chatWindow = document.getElementById('chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatTyping = document.getElementById('chat-typing');
+        const quickChips = document.getElementById('quick-chips');
+
+        function toggleChat() {
+            if (chatWindow.classList.contains('hidden')) {
+                chatWindow.classList.remove('hidden');
+                setTimeout(() => {
+                    chatWindow.classList.remove('scale-95', 'opacity-0');
+                    chatWindow.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                chatInput.focus();
+            } else {
+                chatWindow.classList.remove('scale-100', 'opacity-100');
+                chatWindow.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => { chatWindow.classList.add('hidden'); }, 300);
+            }
+        }
+
+        function handleChatEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function triggerQuickReply(text) {
+            chatInput.value = text;
+            sendMessage();
+            // Hide chips after first use for cleaner UI
+            if(quickChips) quickChips.style.display = 'none'; 
+        }
+
+        function appendMessage(text, isUser) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = isUser ? 'flex items-end justify-end max-w-[90%] self-end slide-up' : 'flex items-start max-w-[90%] slide-up';
+            
+            if (isUser) {
+                msgDiv.innerHTML = `<div class="bg-teal-700 p-3 rounded-2xl rounded-tr-none shadow-sm text-white text-xs leading-relaxed">${text}</div>`;
+            } else {
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 mr-2 flex-shrink-0">
+                        <i class="fas fa-robot text-[10px]"></i>
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-stone-200 shadow-sm text-stone-700 text-xs leading-relaxed">${text}</div>
+                `;
+            }
+            
+            chatMessages.insertBefore(msgDiv, chatTyping);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function sendMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+            
+            if(quickChips) quickChips.style.display = 'none'; 
+
+            appendMessage(text, true);
+            chatInput.value = '';
+            
+            chatTyping.classList.remove('hidden');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            setTimeout(() => {
+                chatTyping.classList.add('hidden');
+                generateBotResponse(text.toLowerCase());
+            }, 800 + Math.random() * 800);
+        }
+
+        function generateBotResponse(input) {
+            let response = "I'm still learning! You can give us a call at (02) 8851 7939, or check our menu above for specific items.";
+            
+            // Enhanced Keyword matching
+            if (input.includes('hour') || input.includes('time') || input.includes('open') || input.includes('close')) {
+                response = "We are open Monday to Friday from 6:00 AM to 3:00 PM, and on weekends from 7:00 AM to 2:00 PM! Perfect for your early morning coffee run.";
+            } else if (input.includes('where') || input.includes('location') || input.includes('address') || input.includes('find')) {
+                response = "We are located inside the Knightsbridge Shopping Centre at 1/159 Ridgecrop Dr, Castle Hill.";
+            } else if (input.includes('vegan') || input.includes('vg')) {
+                response = "Yes! We have dedicated Vegan (vg) options like our famous Acai Bowl and Quinoa Salad. Many other items can be adapted upon request.";
+            } else if (input.includes('gluten') || input.includes('gf') || input.includes('celiac')) {
+                response = "Absolutely. Look for the (gf) or (gfo) tags on our menu! Our Granola Bowl and Acai Bowl are GF, and we offer Gluten-Free bread for $2 extra for items like the Big Breakfast.";
+            } else if (input.includes('dairy') || input.includes('df')) {
+                response = "We have dairy-free options! Our Brekky Protein smoothie, Acai Berry smoothie, and Tropical Delight are all DF. We also stock soy, almond, lactose-free, and oat milks.";
+            } else if (input.includes('coffee') || input.includes('bean') || input.includes('roast')) {
+                response = "We proudly serve Coffee by Paradox. It’s exceptionally smooth! We offer everything from Espresso to Prana Sticky Chai and Iced Mochas.";
+            } else if (input.includes('kids') || input.includes('child')) {
+                response = "We have a great Kids Menu for under 12s! It includes Brekkie Muffins, Chicken Nuggets, Pancake Stacks, and Cheese Burgers ($8-$12).";
+            } else if (input.includes('recommend') || input.includes('best') || input.includes('popular')) {
+                response = "Customer favorites include the Smashed Avo (with our special beetroot hummus), the Peri Peri Chicken Burger for lunch, and our Green Goodness fresh squeezed juice!";
+            } else if (input.includes('hello') || input.includes('hi ') || input.includes('hey') || input === 'hi') {
+                const hour = new Date().getHours();
+                const greeting = hour < 12 ? 'Good morning!' : 'Hello!';
+                response = `${greeting} Welcome to The Local Bean digital assistant. Are you looking for our menu, opening hours, or dietary options?`;
+            }
+
+            appendMessage(response, false);
+        }
+    </script>
+</body>
+</html>
